@@ -1,4 +1,5 @@
-﻿using System.Composition;
+﻿using System.Collections.Generic;
+using System.Composition;
 using System.Composition.Hosting;
 using Android.App;
 using Android.OS;

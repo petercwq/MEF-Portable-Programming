@@ -4,6 +4,7 @@ using ExtendedInterfaces.Pcl;
 namespace ExtendedOperations
 {
     [Export(typeof(IOperation))]
+    [ExportMetadata("Symbol", '%')]
     class Mod : IOperation
     {
         public int Operate(int left, int right)
@@ -11,13 +12,14 @@ namespace ExtendedOperations
             return left % right;
         }
 
-        public char Symbol
-        {
-            get { return '%'; }
-        }
+        //public char Symbol
+        //{
+        //    get { return '%'; }
+        //}
     }
 
     [Export(typeof(IOperation))]
+    [ExportMetadata("Symbol", '+')]
     class Add : IOperation
     {
         public int Operate(int left, int right)
@@ -25,17 +27,14 @@ namespace ExtendedOperations
             return left + right;
         }
 
-        #region IOperation Members
-
-        public char Symbol
-        {
-            get { return '+'; }
-        }
-
-        #endregion
+        //public char Symbol
+        //{
+        //    get { return '+'; }
+        //}
     }
 
     [Export(typeof(IOperation))]
+    [ExportMetadata("Symbol", '-')]
     class Subtract : IOperation
     {
         public int Operate(int left, int right)
@@ -43,14 +42,10 @@ namespace ExtendedOperations
             return left - right;
         }
 
-        #region IOperation Members
-
-        public char Symbol
-        {
-            get { return '-'; }
-        }
-
-        #endregion
+        //public char Symbol
+        //{
+        //    get { return '-'; }
+        //}
     }
 
 }

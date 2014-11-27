@@ -9,7 +9,11 @@ namespace ExtendedInterfaces.Pcl
 
     public interface IOperation
     {
-        Char Symbol { get; }
         int Operate(int left, int right);
+    }
+
+    public class OperationMetadata
+    {
+        public char Symbol { get; set; }
     }
 }

@@ -14,6 +14,48 @@ namespace SimpleCalculator3
         public string HandlerName { get { return "New Handler"; } }
     }
 
+    [Flags]
+    public enum Platforms
+    {
+        Windows,
+        Android
+    }
+
+    //design for export
+    [MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public class Bsl1Attribute : ExportAttribute
+    {
+        public Bsl1Attribute(Type exportType, Platforms platforms)
+            : base(exportType)
+        {
+
+        }
+    }
+
+    // design for share
+    [MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public class Bsl2Attribute : SharedAttribute
+    {
+        public Bsl2Attribute(Platforms platforms)
+            : base() //for globally shared
+        {
+
+        }
+    }
+
+    public interface IBluetooth
+    {
+
+    }
+
+    [Bsl1(typeof(IBluetooth), Platforms.Windows | Platforms.Android)]
+    public class Bluetooth : IBluetooth
+    {
+
+    }
+
     class Program
     {
         [Import]

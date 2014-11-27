@@ -9,17 +9,24 @@ namespace ExtendedOperations.Pcl
     class MySimpleCalculator : ICalculator
     {
         [ImportMany]
-        public IEnumerable<IOperation> OperationsTest { get; set; }
+        public IEnumerable<ExportFactory<IOperation, OperationMetadata>> OperationsTest { get; private set; }
 
-        private readonly IEnumerable<IOperation> operations;
+        //private readonly IEnumerable<IOperation> operations;
+
+        private readonly IEnumerable<KeyValuePair<IOperation, OperationMetadata>> operations;
 
         private readonly IMessageHandler handler;
 
         [ImportingConstructor]
-        public MySimpleCalculator([Import(AllowDefault = true)] IMessageHandler handler, [ImportMany] IEnumerable<IOperation> operations)
+        public MySimpleCalculator([Import(AllowDefault = true)] IMessageHandler handler, [ImportMany] IEnumerable<ExportFactory<IOperation, OperationMetadata>> operations)
         {
             this.handler = handler;
-            this.operations = operations;
+            var list = new List<KeyValuePair<IOperation, OperationMetadata>>();
+            foreach (var op in operations)
+            {
+                list.Add(new KeyValuePair<IOperation, OperationMetadata>(op.CreateExport().Value, op.Metadata));
+            }
+            this.operations = list;
         }
 
         public String Calculate(String input)
@@ -45,7 +52,7 @@ namespace ExtendedOperations.Pcl
 
             foreach (var i in operations)
             {
-                if (i.Symbol.Equals(operation)) return i.Operate(left, right).ToString();
+                if (i.Value.Symbol.Equals(operation)) return i.Key.Operate(left, right).ToString();
             }
             return "Operation Not Found!";
         }

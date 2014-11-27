@@ -4,6 +4,7 @@ using ExtendedInterfaces.Pcl;
 namespace SimpleCalculator3
 {
     [Export(typeof(IOperation))]
+    [ExportMetadata("Symbol", '*')]
     class Multiply : IOperation
     {
         public int Operate(int left, int right)
@@ -11,13 +12,14 @@ namespace SimpleCalculator3
             return left * right;
         }
 
-        public char Symbol
-        {
-            get { return '*'; }
-        }
+        //public char Symbol
+        //{
+        //    get { return '*'; }
+        //}
     }
 
     [Export(typeof(IOperation))]
+    [ExportMetadata("Symbol", '/')]
     class Divide : IOperation
     {
         public int Operate(int left, int right)
@@ -25,9 +27,9 @@ namespace SimpleCalculator3
             return left / right;
         }
 
-        public char Symbol
-        {
-            get { return '/'; }
-        }
+        //public char Symbol
+        //{
+        //    get { return '/'; }
+        //}
     }
 }
