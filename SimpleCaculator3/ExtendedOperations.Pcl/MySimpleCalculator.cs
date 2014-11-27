@@ -9,15 +9,17 @@ namespace ExtendedOperations.Pcl
     class MySimpleCalculator : ICalculator
     {
         [ImportMany]
-        public IEnumerable<IOperation> operations { get; set; }
+        public IEnumerable<IOperation> OperationsTest { get; set; }
 
-        IMessageHandler handler;
+        private readonly IEnumerable<IOperation> operations;
+
+        private readonly IMessageHandler handler;
 
         [ImportingConstructor]
-        public MySimpleCalculator(IMessageHandler handler)//, IEnumerable<IOperation> operations)
+        public MySimpleCalculator([Import(AllowDefault = true)] IMessageHandler handler, [ImportMany] IEnumerable<IOperation> operations)
         {
             this.handler = handler;
-            // this.operations = operations;
+            this.operations = operations;
         }
 
         public String Calculate(String input)
