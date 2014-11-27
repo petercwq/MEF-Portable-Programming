@@ -6,7 +6,7 @@ using ExtendedInterfaces.Pcl;
 namespace ExtendedOperations.Pcl
 {
     [Export(typeof(ICalculator))]
-    class MySimpleCalculator : ICalculator
+    class MySimpleCalculator : ICalculator, IDisposable
     {
         [ImportMany]
         public IEnumerable<ExportFactory<IOperation, OperationMetadata>> OperationsTest { get; private set; }
@@ -24,7 +24,9 @@ namespace ExtendedOperations.Pcl
             var list = new List<KeyValuePair<IOperation, OperationMetadata>>();
             foreach (var op in operations)
             {
-                list.Add(new KeyValuePair<IOperation, OperationMetadata>(op.CreateExport().Value, op.Metadata));
+                var ef = op.CreateExport();
+                list.Add(new KeyValuePair<IOperation, OperationMetadata>(ef.Value, op.Metadata));
+                ef.Dispose();
             }
             this.operations = list;
         }
@@ -66,5 +68,17 @@ namespace ExtendedOperations.Pcl
             }
             return -1;
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            foreach(var item in operations)
+            {
+                
+            }
+        }
+
+        #endregion
     }
 }
