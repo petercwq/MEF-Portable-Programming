@@ -15,8 +15,7 @@ namespace SimpleCalculator3
         private Program()
         {
             var configuration = new ContainerConfiguration()
-                .WithAssembly(typeof(Program).Assembly)
-                .WithAssemblies(GetAssembliesFromDirectory(@"..\..\Extensions"));
+                .WithAssembly(typeof(Program).Assembly);
 
             //var conventions = new ConventionBuilder();
             //conventions.ForTypesDerivedFrom<IMessageHandler>().Export();
@@ -27,6 +26,22 @@ namespace SimpleCalculator3
                 //Fill the imports of this object
                 try
                 {
+                    container.SatisfyImports(this);
+                }
+                catch (CompositionFailedException compositionException)
+                {
+                    // no export error
+                    Console.WriteLine(compositionException.ToString());
+                }
+            }
+
+            configuration = configuration.WithAssemblies(GetAssembliesFromDirectory(@".\Extensions", "*.Pcl.dll"));
+
+            using (var container = configuration.CreateContainer())
+            {
+                try
+                {
+                    //test satisfy again
                     container.SatisfyImports(this);
                 }
                 catch (CompositionFailedException compositionException)
@@ -54,9 +69,9 @@ namespace SimpleCalculator3
         /// </summary>
         /// <param name="Directory">The directory to search in</param>
         /// <returns>List of assemblies in the directory</returns>
-        public static IEnumerable<Assembly> GetAssembliesFromDirectory(string Directory)
+        public static IEnumerable<Assembly> GetAssembliesFromDirectory(string Directory, string filter)
         {
-            var Files = System.IO.Directory.GetFiles(Directory, "*.Pcl.dll", System.IO.SearchOption.AllDirectories);
+            var Files = System.IO.Directory.GetFiles(Directory, filter, System.IO.SearchOption.AllDirectories);
             foreach (var File in Files)
             {
                 yield return Assembly.LoadFile(System.IO.Path.GetFullPath(File));

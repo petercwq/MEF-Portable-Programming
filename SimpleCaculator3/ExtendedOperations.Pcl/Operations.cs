@@ -4,7 +4,7 @@ using ExtendedInterfaces.Pcl;
 namespace ExtendedOperations
 {
     [Export(typeof(IOperation))]
-    public class Mod : IOperation
+    class Mod : IOperation
     {
         public int Operate(int left, int right)
         {

@@ -8,8 +8,18 @@ namespace ExtendedOperations.Pcl
     [Export(typeof(ICalculator))]
     class MySimpleCalculator : ICalculator
     {
-        [ImportMany]
-        public IEnumerable<IOperation> operations { get; set; }
+        //[ImportMany]
+        //public
+        IEnumerable<IOperation> operations;// { get; set; }
+
+        IMessageHandler handler;
+
+        [ImportingConstructor]
+        public MySimpleCalculator(IMessageHandler handler, IEnumerable<IOperation> operations)
+        {
+            this.handler = handler;
+            this.operations = operations;
+        }
 
         public String Calculate(String input)
         {
@@ -22,7 +32,7 @@ namespace ExtendedOperations.Pcl
             try
             {
                 //separate out the operands
-                left = int.Parse(input.Substring(0, fn));
+                left = .Parse(input.Substring(0, fn));
                 right = int.Parse(input.Substring(fn + 1));
             }
             catch
