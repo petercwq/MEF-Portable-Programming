@@ -7,6 +7,13 @@ using ExtendedInterfaces.Pcl;
 
 namespace SimpleCalculator3
 {
+    [Export]
+    class Configuration
+    {
+        [Export("HandlerName")]
+        public string HandlerName { get { return "New Handler"; } }
+    }
+
     class Program
     {
         [Import]
