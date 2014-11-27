@@ -41,6 +41,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExtendedInterfaces.Pcl\ExtendedInterfaces.Pcl.csproj">
+      <Project>{cd3b80e3-b021-43bc-96db-8d5ee9432ab4}</Project>
+      <Name>ExtendedInterfaces.Pcl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Composition.AttributedModel">
       <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
     </Reference>
@@ -59,12 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExtendedInterfaces.Pcl\ExtendedInterfaces.Pcl.csproj">
-      <Project>{cd3b80e3-b021-43bc-96db-8d5ee9432ab4}</Project>
-      <Name>ExtendedInterfaces.Pcl</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
