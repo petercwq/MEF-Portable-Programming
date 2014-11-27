@@ -56,6 +56,11 @@ namespace SimpleCalculator3
 
     }
 
+    //public class Provider: System.Composition.Hosting.Core.ExportDescriptorProvider
+    //{
+
+    //}
+
     class Program
     {
         [Import]
