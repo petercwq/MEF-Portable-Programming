@@ -31,7 +31,7 @@ namespace SimpleCalculator3
                 catch (CompositionFailedException compositionException)
                 {
                     // no export error
-                    Console.WriteLine(compositionException.ToString());
+                    System.Diagnostics.Debug.WriteLine(compositionException.ToString());
                 }
             }
 
