@@ -33,11 +33,65 @@ namespace SimpleCalculator3
 
     //design for export
     [MetadataAttribute]
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class Bsl1Attribute : ExportAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    public class BslExportAttribute : ExportAttribute
     {
-        public Bsl1Attribute(Type exportType, Platforms platforms)
-            : base(exportType)
+        public BslExportAttribute(Type contractType, Platforms platforms)
+            : base(contractType)
+        {
+            SupportedPlatforms = platforms;
+        }
+
+        public BslExportAttribute(string contractName, Platforms platforms)
+            : base(contractName)
+        {
+            SupportedPlatforms = platforms;
+        }
+
+        public Platforms SupportedPlatforms { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+    public class BslImportAttribute : ImportAttribute
+    {
+        public BslImportAttribute(string contractName)
+            : base(contractName)
+        {
+        }
+
+        public BslImportAttribute()
+        { }
+    }
+
+    [MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    public class LslExportAttribute : ExportAttribute
+    {
+        public LslExportAttribute(Type contractType)
+            : base(contractType)
+        {
+
+        }
+
+        public LslExportAttribute(string contractName)
+            : base(contractName)
+        {
+
+        }
+    }
+
+    [MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    public class ServiceExportAttribute : ExportAttribute
+    {
+        public ServiceExportAttribute(Type contractType)
+            : base(contractType)
+        {
+
+        }
+
+        public ServiceExportAttribute(string contractName)
+            : base(contractName)
         {
 
         }
@@ -45,10 +99,10 @@ namespace SimpleCalculator3
 
     // design for share
     [MetadataAttribute]
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class Bsl2Attribute : SharedAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    public class Lsl1Attribute : SharedAttribute
     {
-        public Bsl2Attribute(Platforms platforms)
+        public Lsl1Attribute()
             : base() //for globally shared
         {
 
@@ -60,7 +114,7 @@ namespace SimpleCalculator3
 
     }
 
-    [Bsl1(typeof(IBluetooth), Platforms.Windows | Platforms.Android)]
+    [BslExport(typeof(IBluetooth), Platforms.Windows | Platforms.Android)]
     public class Bluetooth : IBluetooth
     {
 
@@ -75,6 +129,12 @@ namespace SimpleCalculator3
     {
         [Import]
         public ICalculator calculator { get; set; }
+
+        [Import]
+        public ExportFactory<ICalculator> exportCalculator { get; set; }
+
+        [BslImport]
+        public IBluetooth bluetooth { get; set; }
 
         private Program()
         {
@@ -107,6 +167,15 @@ namespace SimpleCalculator3
                 {
                     //test satisfy again
                     container.SatisfyImports(this);
+
+                    //test exprot factory
+                    using (var export = exportCalculator.CreateExport())
+                    {
+                        var calc1 = export.Value;
+                    }
+
+                    // test container export
+                    var calc2 = container.GetExport<ICalculator>();
                 }
                 catch (CompositionFailedException compositionException)
                 {
