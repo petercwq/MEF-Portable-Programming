@@ -33,9 +33,12 @@ namespace SimpleCalculator3.Droid
                     calculator.Calculate(count++ + "+1"));
             };
 
-            var configuration = new ContainerConfiguration()
+            var configuration = new ContainerConfiguration().WithPart<Configuration>()
                 .WithAssembly(System.Reflection.Assembly.Load("ExtendedInterfaces.Pcl.dll"))
                 .WithAssembly(System.Reflection.Assembly.Load("ExtendedOperations.Pcl.dll"));
+
+            //System.Environment.CurrentDirectory
+            var path = Application.FilesDir.AbsolutePath;
 
             using (var container = configuration.CreateContainer())
             {
@@ -50,5 +53,12 @@ namespace SimpleCalculator3.Droid
                 }
             }
         }
+    }
+
+    [Export]
+    class Configuration
+    {
+        [Export("HandlerName")]
+        public string HandlerName { get { return "New Handler"; } }
     }
 }
